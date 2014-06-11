@@ -4,8 +4,8 @@
 
 * This guide is licensed under [CC BY-SA 2.5 CA](http://creativecommons.org/licenses/by-sa/2.5/ca/) which means (among other things) if you  build upon the material, you must distribute your contributions under the same license as the original.
 * This guide is a work in progress. We aren't eproduction experts by any means, so if you take issue with anything below (Are we wrong? Misguided? Too wordy?), then please initiate a pull request (yeah Github!). You will be our friend forever.
-* This guide primarily regards ePub 2.0.1 and Kindle. Updates/additional docs for epub3 will be added later.
-* We don't create books in fixed layout, sync, or with audio and video, or with gesture support. When the time comes we will add guidelines for those features.
+* This guide primarily regards ePub 2.0.1 and Kindle. Updates or additional docs for epub3 will be added later.
+* We don't create books in fixed layout, or with sync, or with audio and video, or with gesture support. When the time comes we will add guidelines for those features.
 * We use [KindleGen](https://kdp.amazon.com/help?topicId=A3IWA2TQYMZ5J6) to create and test ebooks for Amazon. We make our files for Amazon _after_ we make the epub ready for sale. In other words we use KindleGen to convert our epubs to Kindle files as late in the eproduction process as possible. What follows are generic guidelines for all vendors including Amazon. If there is an issue specific to the Kindlegen conversion, that will be noted alongside the instructions for the epub.
 
 Cool? Ok. Let's get started.
@@ -16,10 +16,10 @@ Cool? Ok. Let's get started.
 So what the heck is this and how should it be used?
 
 ####Who
-This guide is for ebook developers using whatever toolchain they prefer. (Formatting guidelines for authors are elsewhere.)
+This guide is for ebook developers using whatever toolchain they prefer. (The formatting guidelines for authors are elsewhere.)
 
 ####What
-The idea behind this guide is to standardize the ebook output from Coach House Books; eproduction the Coach House way™. It's not about process. It's about output. We assume you have a process that works for you. So this more of a reference quide than a step-by-step how to. Basically we want to be able to point to this guide — and with little further explanation — say "like this".
+The idea behind this guide is to standardize the ebook output from Coach House Books; eproduction the Coach House way™. It's not about process. It's about output. We assume you have a process that works for you. So this more of a reference quide than a step-by-step how-to. Basically we want to be able to point to this guide — and with little further explanation — say "like this".
 
 ---
 ###Us Being Pedants
@@ -116,7 +116,7 @@ The contents folder should only contain xhtml files. Fonts, photos & illustratio
 * As per the epub specification, filenames have to start with a letter or number.
 * We prefer filenames be word-separated in all lower case
 * We prefer underscores in file names instead of dashes.
-* We prefer using the .xhtml file extension, instead of .html, so that the file extension is consistent with the doc type declaration within the file.
+* We prefer using the .xhtml file extension, instead of .html, so that the file extension is consistent with the doc type declaration within the file. The html extension should be reserved for epub3 files.
 * We prefer non-abbreviated, semantic file names. chapter01.xhtml instead of ex-ch01.xhtml
 * We prefer generic file names instead of project-specific ones. cover.png instead of 9780061835384.png
 * We prefer file names to be the same length when possible. chapter01.xhtml and chapter11.xhtml instead of chapter1.xhtml and chapter11.xhtml
@@ -180,8 +180,10 @@ There are __four__ sections in this file: metadata, manifest, spine and guide.
 	* dc:publisher (Coach House Books)
 	* dc:creator and opf:file-as=  [^2]
 	* dc:subject (since this field can appear in the navigation of some ereading systems, use the [BISAC subject heading](https://www.bisg.org/complete-bisac-subject-headings-2013-edition), not the code itself)
-* And as a meta property included the date last modified
+* As a meta property, include the date last modified
 	* `<meta property="dcterms:modified">2012-05-04</meta>`
+* As a meta name, include the cover ID
+	* `<meta name="cover" content="my-cover-image" />`	
 	 	  	
 ######2. Manifest
 
@@ -231,10 +233,14 @@ Here is the preferred spine order in sequence. (Not all parts will appear in eve
 ######4. Guide
 
 * Although the Guide is a vestige of older reading systems, it is still required by a number of our vendors, so if it is not present please add it in.
+* Guide items are an optional feature in the EPUB format. Kindle provides support for the cover, TOC, and text guide items.
 * Take specific care to note the first file with [a type](http://www.idpf.org/epub/20/spec/OPF_2.0.1_draft.htm#Section2.6) other than 'cover' or 'title-page' as that file is typically shown to readers first when they open a book after purchase. Our preference is either the foreword, preface, or first chapter be the first file to be revealed to the reader. This varies reading system to system.
 * By convention (see above) we prefer underscores for spaces. Take note that reference types use hyphens. i.e. copyright-page
 * Also by convention we prefer descriptive file names to differentiate the cover image from the cover page. Contrary to this, the reference type for the guide must be simply 'cover'.
 * And remember, reference types are case sensitive.
+* HTML TOC Must Be Referenced as a Guide Item
+* The Kindle platform supports guide items for defining the cover, the table of contents (TOC), and the start reading location (”Go to Beginning”).
+* Amazon does not recommend adding additional guide items to the OPF file, because they will be grayed out in the menu options and may cause customer confusion.
 
 ###Content Divisions
 
@@ -286,12 +292,14 @@ See below for more detail on the typical parts of a published work:
 ####Epigraph
 ####Contents
 
+* The entries in the TOC must be HTML links so that users can click to go to a specific location. 
 * if page numbers are present, from the print edition, please remove them
 * "ibooks:reader-start-page" attribute TK
 	* `￼<nav epub:type="landmarks">  <ol>    <li><a href="coverpg.xhtml" epub:type="cover">Cover</a></li>    <li><a href="titlepg.xhtml" epub:type="titlepage">Title Page</a></li>    <li><a href="chapter.xhtml" epub:type="bodymatter">Start</a></li>    <li><a href="bibliog.xhtml" epub:type="bibliography">Bibliography</a></li></ol> </nav>` 	
 * construct this page as near to the epub3 spec as possible
 
 	`<nav epub:type="toc">    	<ol>      		<li><a href="chapter1.xhtml">Chapter 1</a>         		<ol>          			<li><a href="chapter1.xhtml#figure1">Figure 1</a></li>         		</ol>			</li>      		<li><a href="chapter2.xhtml">Chapter 2</a></li>    	</ol>	</nav>`
+* Possible contradictory info from Amazon, check their guidleines	
 
 ####Foreword
 
@@ -336,6 +344,29 @@ See below for more detail on the typical parts of a published work:
 ####About the Publisher
 * We use the same language from book-to-book to describe ourselves.
 * The most up-to-date version of this boilerplate is available within the about_the_publisher.xhtml sample file.	
+###Page Elements
+
+####Drop Caps
+
+* Drop caps are easy to do on ePub3(Apple) and KF8. They are not as easy to do on older devices that use older file formats. For this reason, we tend to stay away from drop caps. If the print edition has them, we are fine with them be left out of the ebook.
+
+####Page Breaks
+
+* Page breaks are supported in ePub3(Apple) and KF8. They are not supported on older devices that use older file formats. For this reason, we create page breaks the old-fashion way -- by creating a new .xhtml file.
+
+####Indenting
+
+* KindleGen automatically indents the first line of every paragraph by default. We apply an override style for both epubs and Kindles to prevent this.
+
+####Line Height
+
+* No less than 1.2em 
+
+####Anchors
+
+* Anchors Must Be Added Before Formatting Tags `<a name=”Chapter1”/><h1>Chapter 1</h1>`
+
+
 
 ###Managing Assets
 
@@ -344,6 +375,7 @@ See below for more detail on the typical parts of a published work:
 * The book’s cover art must use RGB color mode and should be at least 1400 pixels along the shorter axis.
 * Minimum of 300 dpi.
 * A high-quality JPEG with .jpg or .jpeg extension or PNG with .png extension. 
+* Kindle books must have a marketing cover image provided for use on the website detail page. The preferred format for the cover is a JPEG image of 2500 pixels on the longest side (with a minimum of 1000 pixels on the longest side).
 
 ####Interior Images
 
@@ -358,7 +390,16 @@ See below for more detail on the typical parts of a published work:
 * JPEG with .jpg or .jpeg extension (quality unconstrained) or PNG with .png extension.
 	* Transparency = PNG
 	* No transparency = JPEG 	
-* The maximum recommended size is about 10 MB of un-encoded image data per XHTML file.	
+* The maximum recommended size is about 10 MB of un-encoded image data per XHTML file.
+* Kindle does nor support transparent PNGs
+* Images cannot exceed 127 KB in size
+* JPEG format with a quality factor of 40 or higher.
+* at least 600 x 800 pixels in size
+* Use GIF for Line-Art and Text
+	* The MAXIMUM image size is 500 x 600 pixels. This ensures that the image is not shrunk on a Kindle device, which could make the text illegible.
+	* The MINIMUM size of text is 6 pixels for the height of a lowercase “a.”
+* Place the caption below the related image, so that the reader views the image before the caption.
+* width and height cannot both be set to a fixed percentage.		
 
 ####Audio and Video
 
@@ -393,6 +434,8 @@ See below for more detail on the typical parts of a published work:
 * preview your book in night mode. I
 
 ####Validate that the ePub Successfully Converts Using Kindlegen
+
+* Kindle previewer www.amazon.com/kindleformat
 
 
 
