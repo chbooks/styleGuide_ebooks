@@ -5,7 +5,7 @@
 * This guide is licensed under [CC BY-SA 2.5 CA](http://creativecommons.org/licenses/by-sa/2.5/ca/) which means (among other things) if you  build upon the material, you must distribute your contributions under the same license as the original.
 * This guide is a work in progress. We aren't eproduction experts by any means, so if you take issue with anything below (Are we wrong? Misguided? Too wordy?), then please initiate a pull request (yeah Github!). You will be our friend forever.
 * This guide primarily regards ePub 2.0.1 and Kindle. Updates/additional docs for epub3 will be added later.
-* We don't do books in fixed layout, or with audio and video, or with gesture support. When the time comes we will add guidelines for those features.
+* We don't create books in fixed layout, sync, or with audio and video, or with gesture support. When the time comes we will add guidelines for those features.
 * We use [KindleGen](https://kdp.amazon.com/help?topicId=A3IWA2TQYMZ5J6) to create and test ebooks for Amazon. We make our files for Amazon _after_ we make the epub ready for sale. In other words we use KindleGen to convert our epubs to Kindle files as late in the eproduction process as possible. What follows are generic guidelines for all vendors including Amazon. If there is an issue specific to the Kindlegen conversion, that will be noted alongside the instructions for the epub.
 
 Cool? Ok. Let's get started.
@@ -167,17 +167,21 @@ There are __four__ sections in this file: metadata, manifest, spine and guide.
 
 ######1. Metadata
 
-* Reference both the Dublin Core and Open Packaging Format specifications in the metadata and make sure to declare both as namespaces in the header of the metadata section
-	* `<metadata xmlns:dc="http://purl.org/dc/elements/1.1/"
+* Reference both the Dublin Core and Open Packaging Format specifications in the metadata.
+* Use both the /terms/ namespace and the /elements/1.1/ namespace for Dublin Core.
+* Make sure to declare all three as namespaces in the header of the metadata section
+	* `<metadata xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dc="http://purl.org/dc/terms/"
   xmlns:opf="http://www.idpf.org/2007/opf">`
 * Include the following tags
 	* dc:title
 	* dc:identifier and opf:scheme="ISBN"
-	* dc:date and opf:event="original-publication"
+	* dc:date and opf:event="original-publication""
 	* dc:language (en)
 	* dc:publisher (Coach House Books)
 	* dc:creator and opf:file-as=  [^2]
 	* dc:subject (since this field can appear in the navigation of some ereading systems, use the [BISAC subject heading](https://www.bisg.org/complete-bisac-subject-headings-2013-edition), not the code itself)
+* And as a meta property included the date last modified
+	* `<meta property="dcterms:modified">2012-05-04</meta>`
 	 	  	
 ######2. Manifest
 
@@ -266,6 +270,7 @@ See below for more detail on the typical parts of a published work:
 * Not to be confused with the cover image. The cover image (jpeg) is included on the cover page (xhtml).[^3]
 * The cover page is mandatory for every book. If the cover image from the print edition is not cleared for digital distribution, a generic place holder image should be included in its place on the ebook's cover 'page'.
 * Notes aboout Kobo and SVG TK
+* The background color on HTML in-book cover pages should be undefined. Specifying colors results in uneven, dark borders around the cover image on the cover page.
 
 ####Titles
 * Our general philosophy is if the print edition has several types of title pages, this information should be condensed to a single file in the ebook. i.e, book half titles should be deleted and series title information should be incorporated with the main title.
@@ -275,10 +280,19 @@ See below for more detail on the typical parts of a published work:
 * Generally the file for the copyright 'page' in the ebook should be constructed in the spirit of the closing credits of a film &mdash; it's the place the publisher takes care of business. 
 * In addition to the standard things from the print edition &mdash; an ISBN, an address, a copyright statement etc. &mdash; this file should also contain the publisher's acknowledgements, image credits, design credits, and any other small print.
 * Notes about the library of canada classifications are TK
+* Versioning information TK
 
 ####Dedication
 ####Epigraph
 ####Contents
+
+* if page numbers are present, from the print edition, please remove them
+* "ibooks:reader-start-page" attribute TK
+	* `￼<nav epub:type="landmarks">  <ol>    <li><a href="coverpg.xhtml" epub:type="cover">Cover</a></li>    <li><a href="titlepg.xhtml" epub:type="titlepage">Title Page</a></li>    <li><a href="chapter.xhtml" epub:type="bodymatter">Start</a></li>    <li><a href="bibliog.xhtml" epub:type="bibliography">Bibliography</a></li></ol> </nav>` 	
+* construct this page as near to the epub3 spec as possible
+
+	`<nav epub:type="toc">    	<ol>      		<li><a href="chapter1.xhtml">Chapter 1</a>         		<ol>          			<li><a href="chapter1.xhtml#figure1">Figure 1</a></li>         		</ol>			</li>      		<li><a href="chapter2.xhtml">Chapter 2</a></li>    	</ol>	</nav>`
+
 ####Foreword
 
 * QA -- does the ereader open to the foreword when it is present?
@@ -325,8 +339,40 @@ See below for more detail on the typical parts of a published work:
 
 ###Managing Assets
 
-####Images
+####Cover Art (aka Marketing Image)
+* the image delivered alongside the book asset. It does not refer to the cover image included on the cover page.
+* The book’s cover art must use RGB color mode and should be at least 1400 pixels along the shorter axis.
+* Minimum of 300 dpi.
+* A high-quality JPEG with .jpg or .jpeg extension or PNG with .png extension. 
 
+####Interior Images
+
+* Use the sRGB colour space
+* always include the alt tags (a textual replacement for the image.)
+* dimensions and positioning using CSS
+* Size the image container, not the image itself
+* Size the image container using viewport units, not percentages.
+* 3.2 million pixel limit
+* at least 1.5 times the intended viewing size 
+* No words in images. Use an HTML overlay instead
+* JPEG with .jpg or .jpeg extension (quality unconstrained) or PNG with .png extension.
+	* Transparency = PNG
+	* No transparency = JPEG 	
+* The maximum recommended size is about 10 MB of un-encoded image data per XHTML file.	
+
+####Audio and Video
+
+* The height and width attributes of embedded audio and video should be defined in CSS.
+
+####CSS
+
+* Defining Page breaks TK
+
+####Fonts
+
+* to ensure font scaling body 1em
+* always define sizes in ems
+* For embedded fonts you must set the "specified-fonts" option to true.
 
 ----
 
@@ -344,6 +390,7 @@ See below for more detail on the typical parts of a published work:
 
 ###Do Basic ePub QA Testing
 * Check the file at the very least on two or more devices (not emulators, devices)
+* preview your book in night mode. I
 
 ####Validate that the ePub Successfully Converts Using Kindlegen
 
