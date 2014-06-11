@@ -3,7 +3,7 @@
 ##Before You Start
 
 * This guide is licensed under [CC BY-SA 2.5 CA](http://creativecommons.org/licenses/by-sa/2.5/ca/) which means (among other things) if you  build upon the material, you must distribute your contributions under the same license as the original.
-* This document is a work in progress. We aren't eproduction experts by any means, so if you take issue with anything below (Are we wrong? Misguided? Too wordy?), then please initiate a pull request (yeah Github!). You will be our friend forever.
+* This guide is a work in progress. We aren't eproduction experts by any means, so if you take issue with anything below (Are we wrong? Misguided? Too wordy?), then please initiate a pull request (yeah Github!). You will be our friend forever.
 * This guide primarily regards ePub 2.0.1 and Kindle. Updates/additional docs for epub3 will be added later.
 * We don't do books in fixed layout, or with audio and video, or with gesture support. When the time comes we will add guidelines for those features.
 * We use [KindleGen](https://kdp.amazon.com/help?topicId=A3IWA2TQYMZ5J6) to create and test ebooks for Amazon. We make our files for Amazon _after_ we make the epub ready for sale. In other words we use KindleGen to convert our epubs to Kindle files as late in the eproduction process as possible. What follows are generic guidelines for all vendors including Amazon. If there is an issue specific to the Kindlegen conversion, that will be noted alongside the instructions for the epub.
@@ -16,10 +16,10 @@ Cool? Ok. Let's get started.
 So what the heck is this and how should it be used?
 
 ####Who
-This guide is for ebook developers using whatever toolset they prefer. (Formatting guidelines for authors are elsewhere.)
+This guide is for ebook developers using whatever toolchain they prefer. (Formatting guidelines for authors are elsewhere.)
 
 ####What
-The idea behind this guide is to standardize the ebook output from Coach House Books; eproduction the Coach House way™. It's not about process. It's about output. So no matter what tools you are using, we want to be able to point to this guide — and with little further explanation — say "like this".
+The idea behind this guide is to standardize the ebook output from Coach House Books; eproduction the Coach House way™. It's not about process. It's about output. We assume you have a process that works for you. So this more of a reference quide than a step-by-step how to. Basically we want to be able to point to this guide — and with little further explanation — say "like this".
 
 ---
 ###Us Being Pedants
@@ -32,17 +32,19 @@ When preparing text for inclusion in an ebook, that means four things:
 
 1. First, no ASCII. No ANSI. No Latin-1. No Mac roman. And hell no Windows-1252 or similar. Unicode all the way; UTF-8 to be specific. If you don't know what we are talking about, please go read [Joel Spolsky on the topic](http://www.joelonsoftware.com/articles/Unicode.html) (we'll wait).
 2. Second, we prefer the text be transcoded to UTF-8 rather than simply declared as UTF-8 in the header. If it says it's UTF-8 on the tin, please ensure that's what it is. In practice that means you'll probably have to change the encoding preferences in your text editor. If you are tempted to blindly copy & paste from MsWord into an HTML doc while declaring UTF-8 at the top, please think twice. It's quick and dirty and it works. We get it. But in our experience, this causes problems elsewhere, so please avoid doing this if you can.
-2. Third, we like proper punctuation. We like typographers quotes. We like emdashes. And we like one space between sentences. In our device testing we've found &mdash; provided you do items one and two above &mdash; the need to use HTML entities for every type of punctuation can be minimized. Our advice: use HTML entities to get the job done, but if the unicode punctuation looks fine during QA, don't feel you need to add in HTML entities for their own sake.
+2. Third, we like proper punctuation. We like typographer's quotes. We like emdashes. And we like one space between sentences. In our device testing we've found &mdash; provided you do items one and two above &mdash; the need to use HTML entities for every type of punctuation can be minimized. Our advice: use HTML entities to get the job done, but if the unicode punctuation looks fine during QA, don't feel you need to add in HTML entities for their own sake.
 3. Fourth, we like semantic mark-up. We like lists to be in list tags. We think [there is a difference between text that is italicized and text that is emphasized](http://learn.shayhowe.com/advanced-html-css/semantics-accessibility/). We think abbreviations and addresses and alt-text should be coded properly. Having said that we understand this can be overkill. We won't be paying you enough to definitively weigh in on whether LASER should be coded as an acronymn or not. Just please take care and please be consistent.
 
 ---
 ###Our House Style: Punctuation
 
-The text will have been edited _before_ it is sent to assembly but in certain cases it is handy that the ebook developer know a little about our practices upstream of the creation of the ebook. Here is a selection of entries from our house style that may be relevant during production.
+Typically text will have been edited _before_ it is sent for assembly but in certain cases it is handy that the ebook developer know a little about our practices upstream of the creation of the ebook. Here is a selection of entries from our house style that may be relevant during production.
 
 __Commas:__ The Oxford comma, yes please.
 
 __Dashes:__ Our house-style dictates spaces on either side of dashes. If they aren't present, please add them in.
+
+__French Spacing:__ No thank you.
 
  
 ---
@@ -118,7 +120,7 @@ The contents folder should only contain xhtml files. Fonts, photos & illustratio
 * We prefer non-abbreviated, semantic file names. chapter01.xhtml instead of ex-ch01.xhtml
 * We prefer generic file names instead of project-specific ones. cover.png instead of 9780061835384.png
 * We prefer file names to be the same length when possible. chapter01.xhtml and chapter11.xhtml instead of chapter1.xhtml and chapter11.xhtml
-* In all the examples and templates in this guide, files are named so that they sort in a natural order on your computer (frontmatter files have prefixes in the 0-100 series, backmatter files start at 200, etc.). In a real-world production scenario, we would not be picky about this.
+* In all the examples and templates in this guide, files are named so that they sort in a natural order on your computer (frontmatter files have prefixes in the 0-99 series, backmatter files start at 200, etc.). In a real-world production scenario, we would not be picky about this.
 
 In general, if a file appears consistently across all the titles in our catalog (e.g. about_the_publisher.xhtml or stylesheet.css) we would like it to be consistently named and located across all the titles in our catalog.
 
@@ -126,7 +128,7 @@ In general, if a file appears consistently across all the titles in our catalog 
 
 ##What We Talk About When We Talk About Ebooks
 
-###Parts of a Typical[^1] ePub
+###Parts of a Typical ePub [^1]
 #####Mimetype
 
 * It reads `application/epub+zip`. No returns or line breaks should be included.
@@ -158,10 +160,10 @@ In general, if a file appears consistently across all the titles in our catalog 
 
 #####OEBPS/manifest.opf
 
-* Make sure the file name is referenced properly by the container.xml file in the META-INF directory.
-* The unique id or uid is always the 13 digit ISBN of the edition, without hyphens. This is the same id as in the header of the navigation.ncx file and will be repeated as the identifier (for Dublin Core) in the metadata section below.  
+* Make sure the manifest.opf file path is referenced properly by the container.xml file in the META-INF directory.
+* Include the unique id here as well. This is the same id as in the header of the navigation.ncx file. It is always the 13 digit ISBN of the edition, without hyphens and it will be repeated as the identifier (for Dublin Core) in the metadata section below.  
 
-There are four sections in this file: metadata, manifest, spine and guide.
+There are __four__ sections in this file: metadata, manifest, spine and guide.
 
 ######1. Metadata
 
@@ -173,13 +175,13 @@ There are four sections in this file: metadata, manifest, spine and guide.
 	* dc:identifier and opf:scheme="ISBN"
 	* dc:date and opf:event="original-publication"
 	* dc:language (en)
-	* dc:publisher
-	* dc:creator and opf:file-as=[^2]
+	* dc:publisher (Coach House Books)
+	* dc:creator and opf:file-as=  [^2]
 	* dc:subject (since this field can appear in the navigation of some ereading systems, use the [BISAC subject heading](https://www.bisg.org/complete-bisac-subject-headings-2013-edition), not the code itself)
 	 	  	
 ######2. Manifest
 
-* Include the id, the link, and media-type of each file in the ebook.
+* Include the id name, the link, and media-type of each file in the ebook.
 * We prefer the file name be related to the id name in an obvious way
 	* e.g. item id="cover_image" href="cover_image.jpeg" 
 	OR item id="cover_page" href="cover_page.xhtml"
@@ -190,7 +192,7 @@ There are four sections in this file: metadata, manifest, spine and guide.
 ######3. Spine Order
 
 *  Use the linear="no" designation for any auxilary content or '[XML islands](http://www.idpf.org/epub/20/spec/OPF_2.0.1_draft.htm#Section2.4.3)' in the book.
-*  By default list the cover page: linear="no"
+*  By default, list the cover page: linear="no"
 
 Here is the preferred spine order in sequence. (Not all parts will appear in every book.)
 
@@ -217,7 +219,7 @@ Here is the preferred spine order in sequence. (Not all parts will appear in eve
 |12. Notes						| reference type="notes"
 |13. Glossary					| reference type="glossary"
 |14. Bibliography or References| reference type="bibliography"
-|16. Colophon					| reference type="colophon"
+|16. Colophon (if required)		| reference type="colophon"
 |17. Copyright					| reference type="copyright-page" 
 |18. About the Author(s)		| reference type="text"
 |19. About the Publisher		| reference type="text"
@@ -225,10 +227,10 @@ Here is the preferred spine order in sequence. (Not all parts will appear in eve
 ######4. Guide
 
 * Although the Guide is a vestige of older reading systems, it is still required by a number of our vendors, so if it is not present please add it in.
-* Take specific care to note the first file with [a type](http://www.idpf.org/epub/20/spec/OPF_2.0.1_draft.htm#Section2.6) other than 'cover' or 'title-page' as that file is typically shown to readers first when they open a book after purchase. Our preference is either the foreword, preface, or first chapter be the first file to be revealed to the reader although this varies reading system to system
-* By convention we use underscores for spaces. Take note that the specification mandates hyphens in reference types. i.e. copyright-page
-* By convention when naming things we try our best to differentiate the cover image from the cover page. Take note the reference type for the guide is 'cover'.
-* Reference types are case sensitive.
+* Take specific care to note the first file with [a type](http://www.idpf.org/epub/20/spec/OPF_2.0.1_draft.htm#Section2.6) other than 'cover' or 'title-page' as that file is typically shown to readers first when they open a book after purchase. Our preference is either the foreword, preface, or first chapter be the first file to be revealed to the reader. This varies reading system to system.
+* By convention (see above) we prefer underscores for spaces. Take note that reference types use hyphens. i.e. copyright-page
+* Also by convention we prefer descriptive file names to differentiate the cover image from the cover page. Contrary to this, the reference type for the guide must be simply 'cover'.
+* And remember, reference types are case sensitive.
 
 ###Content Divisions
 
@@ -256,7 +258,7 @@ See below for more detail on the typical parts of a published work:
 | About the Author(s) 			| 17			|
 | Illustration/Photo Credits	| 13			| Remove. Move to copyright page.
 | Indexes						|				| Remove.
-| Colophon						| 15			|
+| Colophon						| 15			| Consult with managing editor.
 | About the Publisher 			| 18			|
 
 
@@ -349,5 +351,7 @@ See below for more detail on the typical parts of a published work:
 
 
 [^1]: Commonly referred to as a _vanilla_ epub, one with no added bells and whistles
-[^2]: This was a requirement for proper alphabetization in iBooks circa 2010. Not sure if this is still a requirement or not. To be checked in future QA. 
+
+[^2]: This was a requirement for proper alphabetization in iBooks circa 2010. Not sure if this is still a requirement or not. To be checked in future QA.
+ 
 [^3]: 'Page' is clearly not the right term when talking about assembling ebooks, but we use it here anyway to meaningfuly distinguish between two items
