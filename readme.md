@@ -170,24 +170,28 @@ There are __four__ sections in this file: metadata, manifest, spine and guide.
 * Reference both the Dublin Core and Open Packaging Format specifications in the metadata.
 * Use both the /terms/ namespace and the /elements/1.1/ namespace for Dublin Core.
 * Make sure to declare all three as namespaces in the header of the metadata section
-	* `<metadata xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dc="http://purl.org/dc/terms/"
-  xmlns:opf="http://www.idpf.org/2007/opf">`
+	* `<metadata 
+	 xmlns:dc="http://purl.org/dc/elements/1.1/"
+	 xmlns:dc="http://purl.org/dc/terms/"
+     xmlns:opf="http://www.idpf.org/2007/opf">`
 * Include the following tags
 	* dc:title
 	* dc:identifier and opf:scheme="ISBN"
-	* dc:date and opf:event="original-publication""
+	* dc:date and opf:event="original-publication"
 	* dc:language (en)
 	* dc:publisher (Coach House Books)
-	* dc:creator and opf:file-as=  [^2]
+	* dc:creator opf:role="aut" opf:file-as="LastName, First" [^2]
 	* dc:subject (since this field can appear in the navigation of some ereading systems, use the [BISAC subject heading](https://www.bisg.org/complete-bisac-subject-headings-2013-edition), not the code itself)
 * As a meta property, include the date last modified
 	* `<meta property="dcterms:modified">2012-05-04</meta>`
 * As a meta name, include the cover ID
-	* `<meta name="cover" content="my-cover-image" />`	
+	* `<meta name="cover" content="my-cover-image" />`
+* Do not include pricing or rights details in the metadata header	
+		
 	 	  	
 ######2. Manifest
 
-* Include the id name, the link, and media-type of each file in the ebook.
+* Include the id name, the href, and media-type of each file in the ebook.
 * We prefer the file name be related to the id name in an obvious way
 	* e.g. item id="cover_image" href="cover_image.jpeg" 
 	OR item id="cover_page" href="cover_page.xhtml"
@@ -421,6 +425,10 @@ See below for more detail on the typical parts of a published work:
 
 * If you have tested your file in iBooks or are otherwise using a Mac, remember to discard the system generated .plist file
 
+zip -0Xq book.epub mimetype
+zip -Xr9Dq book.epub * -x .DS_Store
+
+
 ###Validate Your Pages
 
 * http://validator.w3.org/#validate_by_upload+with_options
@@ -445,3 +453,9 @@ See below for more detail on the typical parts of a published work:
 [^2]: This was a requirement for proper alphabetization in iBooks circa 2010. Not sure if this is still a requirement or not. To be checked in future QA.
  
 [^3]: 'Page' is clearly not the right term when talking about assembling ebooks, but we use it here anyway to meaningfuly distinguish between two items
+
+---
+
+Todo:
+tabs and spaces
+reconcile guide advice between kindle and ibooks
